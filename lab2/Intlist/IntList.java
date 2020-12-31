@@ -84,6 +84,10 @@ public class IntList {
         //TODO:  fill in method
         if (A == null | B == null) {
             return null;
+        } else if (A == null) {
+            return B;
+        } else if (B == null) {
+            return A;
         }
 
         IntList L = A;
@@ -102,6 +106,10 @@ public class IntList {
         //TODO:  fill in method
         if (A == null | B == null) {
             return null;
+        } else if (A == null) {
+            return B;
+        } else if (B == null) {
+            return A;
         }
 
         IntList intList = new IntList(A.first, null);
