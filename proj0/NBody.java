@@ -32,8 +32,6 @@ public class NBody {
             double yyVel = in.readDouble();
             double mass = in.readDouble();
             String imgFileName = in.readString();
-
-            imgFileName = "images/" + imgFileName;
             Planet p = new Planet(xxPos, yyPos, xxVel, yyVel, mass, imgFileName);
             allPlanets[i] = p;
         }
@@ -102,7 +100,7 @@ public class NBody {
         for (int i = 0; i < length; i++) {
             StdOut.printf("%11.4e %11.4e %11.4e %11.4e %11.4e %12s\n",
                   allPlanets[i].xxPos, allPlanets[i].yyPos, allPlanets[i].xxVel,
-                  allPlanets[i].yyVel, allPlanets[i].mass, allPlanets[i].imgFileName.substring(7));
+                  allPlanets[i].yyVel, allPlanets[i].mass, allPlanets[i].imgFileName);
         } 
     }
 }
