@@ -1,20 +1,21 @@
 /* A Deque LinkedList with circular approach */
-public class LinkedListDeque<Item> {
+public class LinkedListDeque<T> {
 
     private class Node {
         /**
          * Used to save the item.
          */
-        public Item item;
+        private T item;
         /**
-         * The prev points to the previous node in this list, if it is the first node, it will point to the sentinel
-         * node.
+         * The prev points to the previous node in this list, if it is the first node,
+         * it will point to the sentinel node.
          */
-        public Node prev;
+        private Node prev;
         /**
-         * The next points to the next node in this list, if it is the last node, it will point to the sentinel node.
+         * The next points to the next node in this list, if it is the last node,
+         * it will point to the sentinel node.
          */
-        public Node next;
+        private Node next;
 
         /**
          * The constructor of node.
@@ -22,7 +23,7 @@ public class LinkedListDeque<Item> {
          * @param prev The previous node of the new node.
          * @param next The next node of the new node.
          */
-        public Node(Item item, Node prev, Node next) {
+        Node(T item, Node prev, Node next) {
             this.item = item;
             this.prev = prev;
             this.next = next;
@@ -50,7 +51,7 @@ public class LinkedListDeque<Item> {
      * The constructor, create an list with 1 item.
      * @param item The item you want to add into the list.
      */
-    public LinkedListDeque(Item item) {
+    public LinkedListDeque(T item) {
         sentinel = new Node(null, null, null);
         addFirstItem(item);
     }
@@ -59,7 +60,7 @@ public class LinkedListDeque<Item> {
      * Add an item to the front of the list.
      * @param item The item you want to add to the front of the list.
      */
-    public void addFirst(Item item) {
+    public void addFirst(T item) {
         if (item == null) {
             return;
         }
@@ -77,7 +78,7 @@ public class LinkedListDeque<Item> {
      * Add an item to the to the back of the list.
      * @param item The item you want to add to the back of the list.
      */
-    public void addLast(Item item) {
+    public void addLast(T item) {
         if (item == null) {
             return;
         }
@@ -126,7 +127,7 @@ public class LinkedListDeque<Item> {
      * Removes and returns the item at the front of the deque. If no such item exists, returns null.
      * @return Returns the item removed.
      */
-    public Item removeFirst() {
+    public T removeFirst() {
         if (isEmpty()) {
             return null;
         }
@@ -146,7 +147,7 @@ public class LinkedListDeque<Item> {
      * Removes and returns the item at the back of the deque. If no such item exists, returns null.
      * @return Returns the item removed.
      */
-    public Item removeLast() {
+    public T removeLast() {
         if (isEmpty()) {
             return null;
         }
@@ -163,12 +164,12 @@ public class LinkedListDeque<Item> {
     }
 
     /**
-     * Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth. If no such item exists,
-     * returns null.
+     * Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth.
+     * If no such item exists, returns null.
      * @param index The position of the item you want to get, started by 0;
      * @return Returns the item you get.
      */
-    public Item get(int index) {
+    public T get(int index) {
         if (index >= size | index < 0) {
             return null;
         }
@@ -185,12 +186,12 @@ public class LinkedListDeque<Item> {
     }
 
     /**
-     * Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth. If no such item exists,
-     * returns null. Using recursion.
+     * Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth.
+     * If no such item exists, returns null. Using recursion.
      * @param index The position of the item you want to get, started by 0;
      * @return Returns the item gotten.
      */
-    public Item getRecursive(int index) {
+    public T getRecursive(int index) {
         if (index >= size | index < 0) {
             return null;
         }
@@ -205,7 +206,7 @@ public class LinkedListDeque<Item> {
      * @param index The position of the item.
      * @return Returns the item gotten.
      */
-    private Item getRecursion(Node node, int index) {
+    private T getRecursion(Node node, int index) {
         if (index != 0) {
             node = node.next;
             index--;
@@ -220,7 +221,7 @@ public class LinkedListDeque<Item> {
      * Add the first item into the list.
      * @param item The first item you want to add.
      */
-    private void addFirstItem(Item item) {
+    private void addFirstItem(T item) {
         sentinel.next = new Node(item, sentinel, sentinel);
         sentinel.prev = sentinel.next;
         size = 1;
@@ -228,10 +229,11 @@ public class LinkedListDeque<Item> {
 
     /**
      * HELPER METHOD
-     * If the list has only 1 item and the removeFirst or removeLast is called, this method will be called.
+     * If the list has only 1 item and the removeFirst or removeLast is called,
+     * this method will be called.
      * @return Returns the item removed.
      */
-    private Item removeToInit() {
+    private T removeToInit() {
         Node node = sentinel.next;
         node.prev = null;
         node.next = null;

@@ -1,11 +1,9 @@
-import java.util.Objects;
-
-public class ArrayDeque<Item> {
+public class ArrayDeque<T> {
 
     /**
      * The array to save items.
      */
-    private Item[] items;
+    private T[] items;
     /**
      * The size of the list.
      */
@@ -23,7 +21,7 @@ public class ArrayDeque<Item> {
      * Constructor, create an empty array deque. The starting size of the array is 8.
      */
     public ArrayDeque() {
-        items = (Item[]) new Object[8];
+        items = (T[]) new Object[8];
         size = 0;
     }
 
@@ -31,7 +29,7 @@ public class ArrayDeque<Item> {
      * Adds an item to the front of the deque
      * @param item The item needs to be added to the front of the deque.
      */
-    public void addFirst(Item item) {
+    public void addFirst(T item) {
         if (item == null) {
             return;
         }
@@ -58,7 +56,7 @@ public class ArrayDeque<Item> {
      * Adds an item to the back of the deque.
      * @param item The item needs to be added to the back of the deque.
      */
-    public void addLast(Item item) {
+    public void addLast(T item) {
         if (item == null) {
             return;
         }
@@ -131,11 +129,11 @@ public class ArrayDeque<Item> {
      * Removes and returns the item at the front of the deque. If no such item exists, returns null.
      * @return The item returned at the front of the deque.
      */
-    public Item removeFirst() {
+    public T removeFirst() {
         if (isEmpty()) {
             return null;
         }
-        Item item;
+        T item;
         if (nextFirst + 1 == items.length) {
             item = items[0];
             items[0] = null;
@@ -157,14 +155,14 @@ public class ArrayDeque<Item> {
      * Removes and returns the item at the back of the deque. If no such item exists, returns null.
      * @return The item returned at the back of the deque.
      */
-    public Item removeLast() {
+    public T removeLast() {
         if (isEmpty()) {
             return null;
         }
-        Item item;
+        T item;
         if (nextLast - 1 < 0) {
             item = items[items.length - 1];
-            items[items.length] = null;
+            items[items.length - 1] = null;
             size--;
             nextLast = items.length - 1;
         } else {
@@ -180,12 +178,12 @@ public class ArrayDeque<Item> {
     }
 
     /**
-     * Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth. If no such item exists,
-     * returns null. Must not alter the deque!
+     * Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth.
+     * If no such item exists, returns null. Must not alter the deque!
      * @param index The position of the item.
      * @return The item gotten.
      */
-    public Item get(int index) {
+    public T get(int index) {
         if (index >= size | index < 0) {
             return null;
         }
@@ -202,7 +200,7 @@ public class ArrayDeque<Item> {
      */
     private void resizeExp() {
         int length = items.length;
-        Item[] resizedArray = (Item[]) new Object[length * 2];
+        T[] resizedArray = (T[]) new Object[length * 2];
         int start = length / 2;
         if (nextFirst == 0) {
             System.arraycopy(items, 1, resizedArray, start, size);
@@ -227,7 +225,7 @@ public class ArrayDeque<Item> {
      */
     private void resizeShk() {
         int length = items.length;
-        Item[] resizedArray = (Item[]) new Object[length / 2];
+        T[] resizedArray = (T[]) new Object[length / 2];
         int start = length / 8;
         if (nextFirst > nextLast) {
             if (nextFirst == length - 1) {
@@ -236,7 +234,8 @@ public class ArrayDeque<Item> {
                 nextLast = start + size;
             } else {
                 System.arraycopy(items, nextFirst + 1, resizedArray, start, length - nextFirst - 1);
-                System.arraycopy(items, 0, resizedArray, start + (length - nextFirst - 1), nextLast);
+                System.arraycopy(items, 0, resizedArray, start + (length - nextFirst - 1),
+                        nextLast);
                 nextFirst = start - 1;
                 nextLast = start + size;
             }
@@ -253,7 +252,7 @@ public class ArrayDeque<Item> {
      * Adds the first item to the deque.
      * @param item The item need to be added to the deque.
      */
-    private void addFirstItem(Item item) {
+    private void addFirstItem(T item) {
         items[3] = item;
         nextFirst = 2;
         nextLast = 4;

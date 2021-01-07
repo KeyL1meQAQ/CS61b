@@ -24,17 +24,29 @@ public class TestDeque {
     @Test
     public void testArray() {
         ArrayDeque<Integer> arrayDeque = new ArrayDeque<>();
-        for (int i = 0; i < 14; i++) {
-            arrayDeque.addFirst(i);
-        }
-        arrayDeque.printDeque();
-        System.out.println();
-        System.out.println(arrayDeque.removeFirst());
-        arrayDeque.printDeque();
-        System.out.println();
-        System.out.println(arrayDeque.removeLast());
-        arrayDeque.printDeque();
-        System.out.println();
-        System.out.println(arrayDeque.get(12));
+        arrayDeque.addLast(0);
+        arrayDeque.removeLast()    ;
+        arrayDeque.addLast(2);
+        arrayDeque.addFirst(3);
+        arrayDeque.get(1)      ;
+        arrayDeque.get(1)      ;
+        arrayDeque.addFirst(6);
+        arrayDeque.addLast(7);
+        arrayDeque.get(3)      ;
+        arrayDeque.removeFirst()    ;
+        arrayDeque.addLast(10);
+        arrayDeque.get(1)      ;
+        arrayDeque.addLast(12);
+        arrayDeque.get(1)      ;
+        arrayDeque.addLast(14);
+        arrayDeque.addLast(15);
+        arrayDeque.get(6)      ;
+        arrayDeque.get(3)      ;
+        arrayDeque.removeLast() ;
+        arrayDeque.get(3)      ;
+        arrayDeque.addFirst(20);
+        arrayDeque.get(6)     ;
+        arrayDeque.removeFirst();
+        arrayDeque.removeLast();
     }
 }
