@@ -48,15 +48,6 @@ public class LinkedListDeque<T> {
     }
 
     /**
-     * The constructor, create an list with 1 item.
-     * @param item The item you want to add into the list.
-     */
-    public LinkedListDeque(T item) {
-        sentinel = new Node(null, null, null);
-        addFirstItem(item);
-    }
-
-    /**
      * Add an item to the front of the list.
      * @param item The item you want to add to the front of the list.
      */
