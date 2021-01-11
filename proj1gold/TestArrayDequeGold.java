@@ -34,6 +34,8 @@ public class TestArrayDequeGold {
         Integer methodCode;
         while (true) {
             if (arrayDequeSolution.size() == 0) {
+                sequence = "";
+                count = 1;
                 methodCode = StdRandom.uniform(2);
             } else {
                 methodCode = StdRandom.uniform(4);
