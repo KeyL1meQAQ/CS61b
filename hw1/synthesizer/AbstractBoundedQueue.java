@@ -27,22 +27,4 @@ public abstract class AbstractBoundedQueue<T> implements BoundedQueue<T> {
     public int fillCount() {
         return fillCount;
     }
-
-    /**
-     * Returns (but not delete) item from the front.
-     * @return The item gotten.
-     */
-    public abstract T peek();
-
-    /**
-     * Deletes and returns item from the front.
-     * @return The item removed.
-     */
-    public abstract T dequeue();
-
-    /**
-     * Adds item x to the end.
-     * @param x The item.
-     */
-    public abstract void enqueue(T x);
 }
