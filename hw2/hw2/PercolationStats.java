@@ -5,7 +5,7 @@ import edu.princeton.cs.introcs.StdStats;
 
 public class PercolationStats {
 
-    private double results[];
+    private double[] results;
 
     private int times;
 
@@ -14,7 +14,8 @@ public class PercolationStats {
      */
     public PercolationStats(int N, int T, PercolationFactory pf) {
         if (N < 0 | T < 0) {
-            throw new IllegalArgumentException("Illegal argument: T and N need to be larger than 0");
+            throw new IllegalArgumentException("Illegal argument: T and N need to be"
+                    + "larger than 0");
         }
         times = T;
         results = new double[times];

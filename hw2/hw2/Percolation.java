@@ -1,6 +1,5 @@
 package hw2;
 
-import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
@@ -17,7 +16,7 @@ public class Percolation {
      * Create N-by-N grid, with all the sites initially blocked.
      */
     public Percolation(int N) {
-        if (N < 0) {
+        if (N <= 0) {
             throw new IllegalArgumentException("Illegal argument, N needs to be larger than 0");
         }
         sideLength = N;
@@ -36,8 +35,8 @@ public class Percolation {
      */
     public void open(int row, int col) {
         if (row < 0 | col < 0 | row > sideLength - 1 | col > sideLength - 1) {
-            throw new IndexOutOfBoundsException("Index out of bound: row or col cannot be larger than N - 1 or " +
-                    "smaller than 0");
+            throw new IndexOutOfBoundsException("Index out of bound: row or col cannot be larger"
+                    + "than N - 1 or smaller than 0");
         }
         if (grid[row][col] == 0) {
             grid[row][col] = 1;
@@ -51,8 +50,8 @@ public class Percolation {
      */
     public boolean isOpen(int row, int col) {
         if (row < 0 | col < 0 | row > sideLength - 1 | col > sideLength - 1) {
-            throw new IndexOutOfBoundsException("Index out of bound: row or col cannot be larger than N - 1 or " +
-                    "smaller than 0");
+            throw new IndexOutOfBoundsException("Index out of bound: row or col cannot be larger"
+                    + "than N - 1 or smaller than 0");
         }
         if (grid[row][col] == 0) {
             return false;
@@ -64,8 +63,13 @@ public class Percolation {
      * Is the site(row, col) full?
      */
     public boolean isFull(int row, int col) {
-        if (grid[row][col] == 2) {
-            return true;
+        int thisSite = row * sideLength + col;
+        int root = gridDisjointSet.find(thisSite);
+        for (int i = 0; i < sideLength; i++) {
+            int targetSite = i;
+            if (root == gridDisjointSet.find(targetSite)) {
+                return true;
+            }
         }
         return false;
     }
@@ -137,5 +141,9 @@ public class Percolation {
                 }
             }
         }
+    }
+
+    public static void main(String[] args) {
+
     }
 }
