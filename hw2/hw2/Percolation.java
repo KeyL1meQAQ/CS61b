@@ -138,18 +138,4 @@ public class Percolation {
             }
         }
     }
-
-    /**
-     * Use the unit testing.
-     */
-    public static void main(String[] args) {
-        Percolation test = new Percolation(20);
-        do {
-            int row = StdRandom.uniform(20);
-            int col = StdRandom.uniform(20);
-            test.open(row, col);
-        } while (!test.percolates());
-        double threshold = test.numberOfOpenSites() / 400d;
-        System.out.println(threshold);
-    }
 }

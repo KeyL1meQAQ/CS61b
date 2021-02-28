@@ -57,8 +57,4 @@ public class PercolationStats {
         return mean() + (1.96 * stddev()) / Math.sqrt(times);
     }
 
-    public static void main(String[] args) {
-        PercolationStats stats = new PercolationStats(20, 50, new PercolationFactory());
-    }
-
 }
