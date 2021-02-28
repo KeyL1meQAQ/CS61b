@@ -1,6 +1,7 @@
 package hw2;
 
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
+import edu.princeton.cs.introcs.StdRandom;
 
 public class Percolation {
 
@@ -20,7 +21,7 @@ public class Percolation {
             throw new IllegalArgumentException("Illegal argument, N needs to be larger than 0");
         }
         sideLength = N;
-        gridDisjointSet = new WeightedQuickUnionUF(sideLength * sideLength);
+        gridDisjointSet = new WeightedQuickUnionUF(sideLength * sideLength + 2);
         grid = new int[sideLength][sideLength];
         for (int i = 0; i < sideLength; i++) {
             for (int j = 0; j < sideLength; j++) {
@@ -66,16 +67,10 @@ public class Percolation {
         if (!isOpen(row, col)) {
             return false;
         }
-        if (row == 0) {
+        int thisSite = coordinateTo1D(row, col);
+        int topNode = sideLength * sideLength;
+        if (gridDisjointSet.connected(thisSite, topNode)) {
             return true;
-        }
-        int thisSite = row * sideLength + col;
-        int root = gridDisjointSet.find(thisSite);
-        for (int i = 0; i < sideLength; i++) {
-            int targetSite = i;
-            if (root == gridDisjointSet.find(targetSite)) {
-                return true;
-            }
         }
         return false;
     }
@@ -91,20 +86,10 @@ public class Percolation {
      * Does the system percolates?
      */
     public boolean percolates() {
-        int thisSite, targetSite;
-        for (int i = 0; i < sideLength; i++) {
-            if (isOpen(0, i)) {
-                thisSite = 0 * sideLength + i;
-                int root = gridDisjointSet.find(thisSite);
-                for (int j = 0; j < sideLength; j++) {
-                    if (isOpen(sideLength - 1, j)) {
-                        targetSite = (sideLength - 1) * sideLength + j;
-                        if (gridDisjointSet.find(targetSite) == root) {
-                            return true;
-                        }
-                    }
-                }
-            }
+        int topNode = sideLength * sideLength;
+        int bottomNode = topNode + 1;
+        if (gridDisjointSet.connected(topNode, bottomNode)) {
+            return true;
         }
         return false;
     }
@@ -113,43 +98,54 @@ public class Percolation {
      * Connect an opened site with all the sites surrounding which are opened already.
      */
     private void connectSurrounding(int row, int col) {
-        int thisSite = row * sideLength + col;
+        int thisSite = coordinateTo1D(row, col);
         int targetSite;
         if (row - 1 > -1) {
             if (isOpen(row - 1, col)) {
-                targetSite = (row - 1) * sideLength + col;
-                if (!gridDisjointSet.connected(thisSite, targetSite)) {
-                    gridDisjointSet.union(thisSite, targetSite);
-                }
+                targetSite = coordinateTo1D(row - 1, col);
+                gridDisjointSet.union(thisSite, targetSite);
             }
         }
         if (row + 1 < sideLength) {
             if (isOpen(row + 1, col)) {
-                targetSite = (row + 1) * sideLength + col;
-                if (!gridDisjointSet.connected(thisSite, targetSite)) {
-                    gridDisjointSet.union(thisSite, targetSite);
-                }
+                targetSite = coordinateTo1D(row + 1, col);
+                gridDisjointSet.union(thisSite, targetSite);
             }
         }
         if (col - 1 > -1) {
             if (isOpen(row, col - 1)) {
-                targetSite = row * sideLength + col - 1;
-                if (!gridDisjointSet.connected(thisSite, targetSite)) {
-                    gridDisjointSet.union(thisSite, targetSite);
-                }
+                targetSite = coordinateTo1D(row, col - 1);
+                gridDisjointSet.union(thisSite, targetSite);
             }
         }
         if (col + 1 < sideLength) {
             if (isOpen(row, col + 1)) {
-                targetSite = row * sideLength + col + 1;
-                if (!gridDisjointSet.connected(thisSite, targetSite)) {
-                    gridDisjointSet.union(thisSite, targetSite);
-                }
+                targetSite = coordinateTo1D(row, col + 1);
+                gridDisjointSet.union(thisSite, targetSite);
             }
+        }
+        if (row == 0) {
+            targetSite = sideLength * sideLength;
+            gridDisjointSet.union(thisSite, targetSite);
+        }
+        if (row == sideLength - 1) {
+            targetSite = sideLength * sideLength + 1;
+            gridDisjointSet.union(thisSite, targetSite);
         }
     }
 
-    public static void main(String[] args) {
+    private int coordinateTo1D(int row, int col) {
+        return sideLength * row + col;
+    }
 
+    public static void main(String[] args) {
+        Percolation percolation = new Percolation(20);
+        do {
+            int row = StdRandom.uniform(20);
+            int col = StdRandom.uniform(20);
+            percolation.open(row, col);
+        } while (!percolation.percolates());
+        double threshold = percolation.numberOfOpenSites() / 400d;
+        System.out.println(threshold);
     }
 }

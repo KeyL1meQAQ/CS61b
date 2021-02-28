@@ -13,7 +13,7 @@ public class PercolationStats {
      * Perform T independent experiment in a N-by-N grid.
      */
     public PercolationStats(int N, int T, PercolationFactory pf) {
-        if (N < 0 | T < 0) {
+        if (N <= 0 | T <= 0) {
             throw new IllegalArgumentException("Illegal argument: T and N need to be"
                     + "larger than 0");
         }
