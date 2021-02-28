@@ -63,6 +63,12 @@ public class Percolation {
      * Is the site(row, col) full?
      */
     public boolean isFull(int row, int col) {
+        if (!isOpen(row, col)) {
+            return false;
+        }
+        if (row == 0) {
+            return true;
+        }
         int thisSite = row * sideLength + col;
         int root = gridDisjointSet.find(thisSite);
         for (int i = 0; i < sideLength; i++) {
