@@ -14,7 +14,6 @@ public class SimpleOomage implements Oomage {
 
     @Override
     public boolean equals(Object o) {
-        // TODO: Write this method.
         if (o.getClass() == SimpleOomage.class) {
             SimpleOomage cmp = (SimpleOomage) o;
             if (this.red == cmp.red && this.green == cmp.green && this.blue == cmp.blue) {
@@ -32,7 +31,7 @@ public class SimpleOomage implements Oomage {
         if (!USE_PERFECT_HASH) {
             return red + green + blue;
         } else {
-            return red / 5 * 51 * 51 + green / 5 * 51 + blue / 5;
+            return red / 5 * 52 * 52 + green / 5 * 52 + blue / 5;
         }
     }
 
