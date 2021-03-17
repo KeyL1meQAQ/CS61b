@@ -218,20 +218,4 @@ public class Board implements WorldState {
     private int toY(int i) {
         return (i - 1) % size();
     }
-
-    public static void main(String[] args) {
-        int[][] test = new int[3][3];
-        test[0][0] = 8;
-        test[0][1] = 1;
-        test[0][2] = 3;
-        test[1][0] = 4;
-        test[1][1] = 0;
-        test[1][2] = 2;
-        test[2][0] = 7;
-        test[2][1] = 6;
-        test[2][2] = 5;
-        Board board = new Board(test);
-        System.out.println(board.hamming());
-        System.out.println(board.manhattan());
-    }
 }
