@@ -30,6 +30,7 @@ public class Router {
         Info(long id) {
             this.id = id;
             marked = false;
+            distToS = Double.MAX_VALUE;
         }
     }
 
@@ -76,18 +77,15 @@ public class Router {
                 }
                 Info nextInfo = infoMap.get(id);
                 if (!nextInfo.marked) {
-                    if (infoQueue.contains(nextInfo)) {
-                        infoQueue.remove(nextInfo);
+                    if (curInfo.distToS + g.distance(id, curInfo.id) < nextInfo.distToS) {
+                        if (infoQueue.contains(nextInfo)) {
+                            infoQueue.remove(nextInfo);
+                        }
                         nextInfo.distToS = curInfo.distToS + g.distance(id, curInfo.id);
                         nextInfo.priority = nextInfo.distToS + g.distance(id, endID);
                         nextInfo.lastNode = curInfo.id;
                         infoQueue.add(nextInfo);
-                        continue;
                     }
-                    nextInfo.distToS = curInfo.distToS + g.distance(id, curInfo.id);
-                    nextInfo.priority = nextInfo.distToS + g.distance(id, endID);
-                    nextInfo.lastNode = curInfo.id;
-                    infoQueue.add(nextInfo);
                 }
             }
         }

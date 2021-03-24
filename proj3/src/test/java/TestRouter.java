@@ -42,6 +42,17 @@ public class TestRouter {
             List<Long> expected = expectedResults.get(i);
             assertEquals("Your results did not match the expected results", expected, actual);
         }
+
+        double stlon = -122.2431001303112;
+        double stlat = 37.845543536162;
+        double destlon = -122.26159534503441;
+        double destlat = 37.848053250571745;
+        List<Long> result = Router.shortestPath(graph, stlon, stlat, destlon, destlat);
+        System.out.println(result);
+
+        System.out.println(graph.distance(53061680, 53061682) + graph.distance(53061682, 53061684)
+                + graph.distance(53061684, 53107943));
+        System.out.println(graph.distance(53061680, 53134517) + graph.distance(53134517, 53107943));
     }
 
     private List<Map<String, Double>> paramsFromFile() throws Exception {
