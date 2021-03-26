@@ -1,4 +1,3 @@
-import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import java.io.File;
@@ -35,12 +34,14 @@ public class GraphDB {
      */
     private Map<Long, Node> nodeMap = new LinkedHashMap<>();
     private Map<Long, Way> wayMap = new LinkedHashMap<>();
+    private Map<Long, Location> locationMap = new LinkedHashMap<>();
 
     static class Node {
         private long id;
         private double lon;
         private double lat;
         private Set<Long> connected;
+        private List<Long> ways;
         private String name;
 
         Node(String id, String lon, String lat) {
@@ -48,6 +49,7 @@ public class GraphDB {
             this.lon = Double.parseDouble(lon);
             this.lat = Double.parseDouble(lat);
             connected = new HashSet<>();
+            ways = new LinkedList<>();
         }
 
         public void setName(String name) {
@@ -56,6 +58,32 @@ public class GraphDB {
 
         public long getId() {
             return id;
+        }
+
+        public void addWay(long way) {
+            ways.add(way);
+        }
+
+        public List<Long> getWays() {
+            return ways;
+        }
+    }
+
+    static class Location {
+        private long id;
+        private String name;
+
+        Location(long id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public long getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
         }
     }
 
@@ -94,20 +122,36 @@ public class GraphDB {
             this.name = name;
         }
 
+        public String getName() {
+            return name;
+        }
+
+        public long getId() {
+            return id;
+        }
+
         public boolean getValid() {
             return valid;
         }
 
         public void connect() {
+            boolean hasName = false;
             if (nodeList.size() == 1) {
+                nodeList.get(0).addWay(id);
                 return;
             }
-            nodeList.get(0).connected.add(nodeList.get(1).id);
+            Node startNode = nodeList.get(0);
+            startNode.addWay(id);
+            startNode.connected.add(nodeList.get(1).id);
             for (int i = 1; i < nodeList.size() - 1; i++) {
-                nodeList.get(i).connected.add(nodeList.get(i - 1).id);
-                nodeList.get(i).connected.add(nodeList.get(i + 1).id);
+                Node node = nodeList.get(i);
+                node.addWay(id);
+                node.connected.add(nodeList.get(i - 1).id);
+                node.connected.add(nodeList.get(i + 1).id);
             }
-            nodeList.get(nodeList.size() - 1).connected.add(nodeList.get(nodeList.size() - 2).id);
+            Node lastNode = nodeList.get(nodeList.size() - 1);
+            lastNode.addWay(id);
+            lastNode.connected.add(nodeList.get(nodeList.size() - 2).id);
         }
     }
 
@@ -278,5 +322,13 @@ public class GraphDB {
 
     public void addWay(Way way) {
         wayMap.put(way.id, way);
+    }
+
+    public Way getWay(long id) {
+        return wayMap.get(id);
+    }
+
+    public void addLocation(Location location) {
+        locationMap.put(location.id, location);
     }
 }

@@ -1,13 +1,6 @@
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.PriorityQueue;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.regex.Matcher;
-import java.util.Comparator;
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
@@ -104,14 +97,91 @@ public class Router {
      * @param g The graph to use.
      * @param route The route to translate into directions. Each element
      *              corresponds to a node from the graph in the route.
-     * @return A list of NavigatiionDirection objects corresponding to the input
+     * @return A list of NavigationDirection objects corresponding to the input
      * route.
      */
     public static List<NavigationDirection> routeDirections(GraphDB g, List<Long> route) {
-
-        return null; // FIXME
+        ArrayList<Long> path = new ArrayList<>(route);
+        String way = "START";
+        int direction = NavigationDirection.START;
+        double distance = 0;
+        List<NavigationDirection> naviList = new LinkedList<>();
+        for (int i = 0, j = 1; j < path.size(); i++, j++) {
+            long first = path.get(i);
+            long second = path.get(j);
+            String curWay = getWayName(g, first, second);
+            if (way.equals("START") || curWay.equals(way)) {
+                distance += g.distance(first, second);
+                way = curWay;
+            } else {
+                NavigationDirection navi = new NavigationDirection();
+                navi.way = way;
+                navi.distance = distance;
+                navi.direction = direction;
+                naviList.add(navi);
+                way = curWay;
+                distance = g.distance(first, second);
+                direction = getDirection(g.bearing(path.get(i - 1), path.get(i)),
+                        g.bearing(first, second));
+            }
+        }
+        NavigationDirection navi = new NavigationDirection();
+        navi.way = way;
+        navi.distance = distance;
+        navi.direction = direction;
+        naviList.add(navi);
+        return naviList;
     }
 
+    private static String getWayName(GraphDB g, long v, long w) {
+        GraphDB.Node node1 = g.getNode(v);
+        GraphDB.Node node2 = g.getNode(w);
+        List<Long> ways1 = node1.getWays();
+        List<Long> ways2 = node2.getWays();
+        List<Long> intersection = new LinkedList<>(ways1);
+        intersection.retainAll(ways2);
+
+        if (!intersection.isEmpty()) {
+            if (g.getWay(intersection.get(0)).getName() == null) {
+                return "";
+            } else {
+                return g.getWay(intersection.get(0)).getName();
+            }
+        }
+
+        return "";
+    }
+
+    private static int getDirection(double prevDegree, double thisDegree) {
+        double degree = thisDegree - prevDegree;
+        if (degree > 180) {
+            degree -= 360;
+        } else if (degree < -180) {
+            degree += 360;
+        }
+        if (degree > -15 && degree < 15) {
+            return NavigationDirection.STRAIGHT;
+        }
+        if (degree > -30 && degree <= -15) {
+            return NavigationDirection.SLIGHT_LEFT;
+        }
+        if (degree >= 15 && degree < 30) {
+            return NavigationDirection.SLIGHT_RIGHT;
+        }
+        if (degree > -100 && degree <= -30) {
+            return NavigationDirection.LEFT;
+        }
+        if (degree >= 30 && degree < 100) {
+            return NavigationDirection.RIGHT;
+        }
+        if (degree <= -100) {
+            return NavigationDirection.SHARP_LEFT;
+        }
+        if (degree >= 100) {
+            return NavigationDirection.SHARP_RIGHT;
+        }
+        return -1;
+    }
 
     /**
      * Class to represent a navigation direction, which consists of 3 attributes:
