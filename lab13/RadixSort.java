@@ -39,37 +39,30 @@ public class RadixSort {
         if (index < 0) {
             return asciis;
         }
-        LinkedList<String>[] buckets = new LinkedList[256];
+        int[] count = new int[256];
+        int[] startPosition = new int[256];
+        int start = 0;
         for (String s : asciis) {
-            if (s.length() < index + 1) {
-                if (buckets[0] == null) {
-                    buckets[0] = new LinkedList<>();
-                }
-                buckets[0].add(s);
-                continue;
-            }
-            int numOfBucket = (int) s.charAt(index);
-            if (buckets[numOfBucket] == null) {
-                buckets[numOfBucket] = new LinkedList<>();
-            }
-            buckets[numOfBucket].add(s);
+            count[charAt(s, index)]++;
         }
-        asciis = catenateBuckets(buckets, asciis.length);
-        return sortHelperLSD(asciis, index - 1);
+        for (int i = 0; i < 256; i++) {
+            startPosition[i] = start;
+            start += count[i];
+        }
+        String[] result = new String[asciis.length];
+        for (String s : asciis) {
+            int charCode = charAt(s, index);
+            result[startPosition[charCode]] = s;
+            startPosition[charCode]++;
+        }
+        return sortHelperLSD(result, index - 1);
     }
 
-    private static String[] catenateBuckets(LinkedList<String>[] buckets, int size) {
-        String[] catenated = new String[size];
-        int index = 0;
-        for (LinkedList<String> bucket : buckets) {
-            if (bucket != null && !bucket.isEmpty()) {
-                while (!bucket.isEmpty()) {
-                    catenated[index] = bucket.removeFirst();
-                    index++;
-                }
-            }
+    private static int charAt(String s, int index) {
+        if (s.length() < index + 1) {
+            return 0;
         }
-        return catenated;
+        return s.charAt(index);
     }
 
     /**
@@ -85,5 +78,18 @@ public class RadixSort {
     private static void sortHelperMSD(String[] asciis, int start, int end, int index) {
         // Optional MSD helper method for optional MSD radix sort
         return;
+    }
+
+    public static void main(String[] args) {
+        String[] strings = new String[5];
+        strings[0] = "abced";
+        strings[1] = "abcd";
+        strings[2] = "abc";
+        strings[3] = "ab";
+        strings[4] = "a";
+        String[] result = RadixSort.sort(strings);
+        for (String s : result) {
+            System.out.println(s);
+        }
     }
 }
