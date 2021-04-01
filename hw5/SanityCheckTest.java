@@ -1,6 +1,5 @@
 import edu.princeton.cs.algs4.Picture;
 import java.awt.Color;
-import java.util.Arrays;
 import static org.junit.Assert.*;
 import org.junit.Test;
 

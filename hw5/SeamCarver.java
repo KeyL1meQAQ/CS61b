@@ -1,10 +1,9 @@
 import edu.princeton.cs.algs4.Picture;
+import java.awt.Color;
 
-import java.awt.*;
 
 public class SeamCarver {
     private Picture picture;
-
     private double[][] pictureArr;
 
     /**
@@ -18,7 +17,7 @@ public class SeamCarver {
      * @return Current picture
      */
     public Picture picture() {
-        return picture;
+        return new Picture(picture);
     }
 
     /**
@@ -42,7 +41,6 @@ public class SeamCarver {
         if (x < 0 || x > width() - 1 || y < 0 || y > height() - 1) {
             throw new IndexOutOfBoundsException();
         }
-
         Color left = picture.get(getLeft(x), y);
         Color right = picture.get(getRight(x), y);
         Color up = picture.get(x, getUp(y));
@@ -82,6 +80,10 @@ public class SeamCarver {
         }
         for (int i = 1; i < height(); i++) {
             for (int j = 0; j < width(); j++) {
+                if (width() == 1) {
+                    from[i][j] = 0;
+                    continue;
+                }
                 if (j == 0) {
                     int minIndex = getMinIndex(i - 1, j, j + 1, -1);
                     pictureArr[i][j] = energy(j, i) + pictureArr[i - 1][minIndex];
@@ -114,14 +116,14 @@ public class SeamCarver {
     }
 
     public int[] findHorizontalSeam() {
-        Picture picture = new Picture(height(), width());
+        Picture transPicture = new Picture(height(), width());
         Picture originPic = this.picture;
-        for (int i = 0; i < picture.height(); i++) {
-            for (int j = 0; j < picture.width(); j++) {
-                picture.set(j, i, originPic.get(i, j));
+        for (int i = 0; i < transPicture.height(); i++) {
+            for (int j = 0; j < transPicture.width(); j++) {
+                transPicture.set(j, i, originPic.get(i, j));
             }
         }
-        this.picture = picture;
+        this.picture = transPicture;
         int[] result = findVerticalSeam();
         this.picture = originPic;
         return result;

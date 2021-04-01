@@ -32,9 +32,11 @@ public class SCUtility {
     // convert SeamCarver picture to W-by-H energy matrix
     public static double[][] toEnergyMatrix(SeamCarver sc) {
         double[][] a = new double[sc.width()][sc.height()];
-        for (int col = 0; col < sc.width(); col++)
-            for (int row = 0; row < sc.height(); row++)
+        for (int col = 0; col < sc.width(); col++) {
+            for (int row = 0; row < sc.height(); row++) {
                 a[col][row] = sc.energy(col, row);
+            }
+        }
         return a;        
     }
 
@@ -69,13 +71,15 @@ public class SCUtility {
             }
         }
             
-        if (maxVal == 0)
-            return picture;  // return black picture
+        if (maxVal == 0) {
+            return picture;
+        } // return black picture
 
         for (int col = 0; col < width; col++) {
             for (int row = 0; row < height; row++) {
                 float normalizedGrayValue = (float) grayValues[col][row] / (float) maxVal;
-                Color gray = new Color(normalizedGrayValue, normalizedGrayValue, normalizedGrayValue);
+                Color gray = new Color(normalizedGrayValue, normalizedGrayValue,
+                        normalizedGrayValue);
                 picture.set(col, row, gray);
             }
         }
@@ -91,14 +95,13 @@ public class SCUtility {
         
         //if horizontal seam, set one pixel in every column
         if (isHorizontal) {
-            for (int col = 0; col < picture.width(); col++)
+            for (int col = 0; col < picture.width(); col++) {
                 overlaid.set(col, seam[col], Color.RED);
-        }
-
-        // if vertical seam, set one pixel in each row
-        else {
-            for (int row = 0; row < picture.height(); row++)
+            }
+        } else {
+            for (int row = 0; row < picture.height(); row++) {
                 overlaid.set(seam[row], row, Color.RED);
+            }
         }
 
         return overlaid;
