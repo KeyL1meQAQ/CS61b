@@ -17,7 +17,7 @@ public class SeamCarver {
      * @return Current picture
      */
     public Picture picture() {
-        return new Picture(picture);
+        return picture;
     }
 
     /**
@@ -130,11 +130,11 @@ public class SeamCarver {
     }
 
     public void removeHorizontalSeam(int[] seam) {
-        SeamRemover.removeHorizontalSeam(picture, seam);
+        this.picture = SeamRemover.removeHorizontalSeam(picture, seam);
     }
 
     public void removeVerticalSeam(int[] seam) {
-        SeamRemover.removeVerticalSeam(picture, seam);
+        this.picture = SeamRemover.removeVerticalSeam(picture, seam);
     }
 
     private int getMinIndex(int row, int firstJ, int secondJ, int thirdJ) {
