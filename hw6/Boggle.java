@@ -25,6 +25,9 @@ public class Boggle {
      *         have them in ascending alphabetical order.
      */
     public static List<String> solve(int k, String boardFilePath) {
+        if (k < 1) {
+            throw new IllegalArgumentException();
+        }
         readDictionary();
         readBoggle(boardFilePath);
         valid = new LinkedList<>();
@@ -57,8 +60,18 @@ public class Boggle {
 
     private static void readBoggle(String boardFilePath) {
         In in = new In(boardFilePath);
+        int length = 0;
+        if (in.hasNextLine()) {
+            char[] line = in.readLine().toCharArray();
+            length = line.length;
+            boggle.add(line);
+        }
         while (in.hasNextLine()) {
-            boggle.add(in.readLine().toCharArray());
+            char[] line = in.readLine().toCharArray();
+            if (line.length != length) {
+                throw new IllegalArgumentException();
+            }
+            boggle.add(line);
         }
     }
 
@@ -176,5 +189,10 @@ public class Boggle {
                 }
             }
         }
+    }
+
+    public static void main(String[] args) {
+        List<String> result = solve(7, "exampleBoard.txt");
+        System.out.println(result);
     }
 }
